@@ -1269,6 +1269,11 @@
     "@firebase/util" "1.4.3"
     tslib "^2.1.0"
 
+"@firebase/app-types@0.6.3":
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.6.3.tgz#3f10514786aad846d74cd63cb693556309918f4b"
+  integrity sha512-/M13DPPati7FQHEQ9Minjk1HGLm/4K4gs9bR4rzLCWJg64yGtVC0zNg9gDpkw9yc2cvol/mNFxqTtd4geGrwdw==
+
 "@firebase/app-types@0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.7.0.tgz#c9e16d1b8bed1a991840b8d2a725fb58d0b5899f"
@@ -1346,6 +1351,13 @@
   dependencies:
     "@firebase/app-types" "0.7.0"
     "@firebase/util" "1.4.3"
+
+"@firebase/database-types@^0.7.0":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@firebase/database-types/-/database-types-0.7.3.tgz#819f16dd4c767c864b460004458620f265a3f735"
+  integrity sha512-dSOJmhKQ0nL8O4EQMRNGpSExWCXeHtH57gGg0BfNAdWcKhC8/4Y+qfKLfWXzyHvrSecpLmO0SmAi/iK2D5fp5A==
+  dependencies:
+    "@firebase/app-types" "0.6.3"
 
 "@firebase/database@0.12.5":
   version "0.12.5"
@@ -2985,6 +2997,19 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
+geofire-common@5.2.0, geofire-common@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/geofire-common/-/geofire-common-5.2.0.tgz#27c78115ef547bdf97ad676d18d24b6f28a19a87"
+  integrity sha512-b3RCXxzdc/ZAoNag/F8n4myWYiBPI1eeQ/gtjLvBKKeILNnYb6Qw0GL/AVfYUKk3Z19Pw+xVBSlYcjqy5OHVzg==
+
+geofire@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/geofire/-/geofire-5.2.0.tgz#d3aaa037d5074c2ff959e3c59e21f1e2bb08cfaf"
+  integrity sha512-Vc7j5e10bd5L16rwL7VMZLQIrlUMm/z8rHP9YR879mrFoGmkSZwnbArWre55vQllR62awTFtu8TfdlU0QK3bIQ==
+  dependencies:
+    "@firebase/database-types" "^0.7.0"
+    geofire-common "5.2.0"
+
 get-caller-file@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
@@ -4129,6 +4154,11 @@ react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-leaflet-universal@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-leaflet-universal/-/react-leaflet-universal-2.2.1.tgz#4458cb9be578ba41658d3fcca3bcc0b674630c32"
+  integrity sha512-5eXeAylLcHQSjD06DV6Po98NntShXVI47Kj+uZQSG0byfJDbbFOHFPCLcVZa7kY/TAqXuQq8BK4RyV7kPhf70A==
 
 react-leaflet@^3.2.5:
   version "3.2.5"

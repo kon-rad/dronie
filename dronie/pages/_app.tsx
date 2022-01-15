@@ -1,6 +1,5 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import Nav from "../components/nav";
 import Footer from "../components/footer";
@@ -10,6 +9,14 @@ import { Web3ReactProvider } from "@web3-react/core";
 import { getProvider } from "../utils/web3";
 import { SEO } from '../components/seo'
 import "@fontsource/syne"
+import { getFirestore } from "firebase/firestore"
+
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
+// const analytics = getAnalytics(app);
 
 
 const firebaseConfig = {
@@ -21,12 +28,9 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
-
-getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+// getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 const styles = {
   global: (props: any) => ({
@@ -126,12 +130,6 @@ const dronieTheme = {
 }
 
 const theme = extendTheme(dronieTheme)
-
-declare global {
-  interface Window {
-    ethereum: any;
-  }
-}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
