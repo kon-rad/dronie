@@ -108,6 +108,8 @@
   margin-left: 0.5rem;
 }
 
+#map { height: 180px; }
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

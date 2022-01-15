@@ -65,15 +65,12 @@ export default function Footer() {
             <ListHeader>Company</ListHeader>
             <Link href={'#'}>About Us</Link>
             <Link href={'#'}>Blog</Link>
-            <Link href={'#'}>Careers</Link>
             <Link href={'#'}>Contact Us</Link>
           </Stack>
 
           <Stack align={'flex-start'}>
             <ListHeader>Support</ListHeader>
-            <Link href={'#'}>Help Center</Link>
-            <Link href={'#'}>Safety Center</Link>
-            <Link href={'#'}>Community Guidelines</Link>
+            <Link href={'#'}>Community</Link>
           </Stack>
 
           <Stack align={'flex-start'}>
@@ -81,13 +78,13 @@ export default function Footer() {
             <Link href={'#'}>Cookies Policy</Link>
             <Link href={'#'}>Privacy Policy</Link>
             <Link href={'#'}>Terms of Service</Link>
-            <Link href={'#'}>Law Enforcement</Link>
           </Stack>
 
           <Stack align={'flex-start'}>
-            <ListHeader>Install App</ListHeader>
-            {/* <AppStoreBadge />
-            <PlayStoreBadge /> */}
+            <ListHeader>Links</ListHeader>
+            <Link href={'#'}>Search</Link>
+            <Link href={'#'}>Post</Link>
+            <Link href={'#'}>Profile</Link>
           </Stack>
         </SimpleGrid>
       </Container>
@@ -104,7 +101,7 @@ export default function Footer() {
           spacing={4}
           justify={{ md: 'space-between' }}
           align={{ md: 'center' }}>
-          <Text>© 2020 Chakra Templates. All rights reserved</Text>
+          <Text>© 2021 Dronie. All rights reserved</Text>
           <Stack direction={'row'} spacing={6}>
           </Stack>
         </Container>

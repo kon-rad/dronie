@@ -1,0 +1,6 @@
+export const DEFAULT_COLOR_SCHEME = 'teal'
+export const DESCRIPTION = 'Dronie viedo and images NFT marketplace'
+export const IMAGE_OG = '/resources/images/logo.png'
+export const SITE_URL = 'www.dronienexus.com'
+export const SOCIAL_HANDLE = ''
+export const TITLE = 'Dronie Nexus'

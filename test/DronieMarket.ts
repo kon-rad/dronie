@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-describe('DronieMarketplace', function () {
+describe('DronieMarket', function () {
     it('Should create and execute market sales', async function () {
       /* deploy to marketplace */
       const Market = await ethers.getContractFactory('DronieMarket');

@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import styles from '../styles/Home.module.css'
 import { Box, Flex } from '@chakra-ui/react';
+import Map from '../components/map';
 
 const Home: NextPage = () => {
   return (
@@ -9,6 +10,7 @@ const Home: NextPage = () => {
         <Box maxWidth="1200px" my={12}>
           DRONIE HOMEPAGE
         </Box>
+        <Map/>
         <Box maxWidth="1200px" my={12}>
           VIDEO SAERCH HERE
         </Box>
