@@ -54,17 +54,15 @@ function DisplayPosition({ map }) {
     return (
         <p>
             latitude: {position.lat.toFixed(4)}, longitude:{" "}
-            {position.lng.toFixed(4)}
-            <br />
-            zoom: {map._zoom}
-            <br />
+            {position.lng.toFixed(4)}{"    "}
+            zoom: {map._zoom}{"    "}
             <button onClick={onClick}>reset</button>
         </p>
     );
 }
 
 const getLatLngArray = (obj: any) => {
-    if (obj.lat && obj.lng) {
+    if (obj && obj.lat && obj.lng) {
         return [obj.lat, obj.lng];
     }
     return null;

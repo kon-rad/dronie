@@ -11,6 +11,7 @@ const Post: NextPage = () => {
   const web3 = useWeb3React();
 
   const handleSubmit = (
+    name: string,
     description: string,
     fileUrl: string,
     price: string,
@@ -22,7 +23,7 @@ const Post: NextPage = () => {
       alert("Please sign in via metamask");
       return;
     }
-    writeMedia("123", "name1", "desc1", true, lat, lng);
+    writeMedia("123", name, description, true, lat, lng);
     if (web3.account && web3.library && description && fileUrl && price) {
       //   createPost(web3.account, web3.library, description, fileUrl, price);
     //   writeContentData("123", "name1", "desc1", true);
