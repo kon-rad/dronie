@@ -12,17 +12,24 @@ import { storeNFT } from "../services/nftStorage";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { getIpfsUrl, splitDomain } from "../utils/storage";
-import { uploadToFirebase } from "../services/firebaseWrite";
+import { uploadToFirebase, writeMedia } from "../services/firebaseWrite";
 import { getDownloadURL } from "firebase/storage";
+import { uploadImageToIPFS } from '../services/createPost';
+
+import { create as ipfsHttpClient } from 'ipfs-http-client';
+
+// @ts-ignore
+const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
 type Props = {
     onSubmit: any;
 };
 
-const devMode = true;
+const devMode = false;
 
 const CreateForm = (props: Props) => {
     const [fileUrl, setFileUrl] = useState<string>("");
+    const [IPFSFileUrl, setIPFSFile] = useState<string>("");
     const [cloudFileUrl, setCloudFileUrl] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -54,20 +61,23 @@ const CreateForm = (props: Props) => {
             const f: any = acceptedFiles[i];
             const fileName = f.name || f.key;
             try {
+                debugger;
                 const nftData: any = await storeNFT(name, description, f);
-                const response = await axios.get(
-                    getIpfsUrl(splitDomain(nftData.url))
-                );
-                nftData["metadata"] = response.data;
+                // const response = await axios.get(
+                //     getIpfsUrl(splitDomain(nftData.url))
+                // );
+                nftData["metadata"] = nftData.data;
+                // nftData["metadata"] = nftData.metadata;
+                console.log("nftData: ", nftData);
                 const d = new Date();
                 nftData[
                     "added"
                 ] = `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
                 results.push(nftData);
-                console.log(
-                    "image: ",
-                    getIpfsUrl(splitDomain(nftData["metadata"].image))
-                );
+                // console.log(
+                //     "image: ",
+                //     getIpfsUrl(splitDomain(nftData["metadata"].image))
+                // );
             } catch (e: any) {
                 alert(`Error uploading ${fileName}: ${e.toString()}`);
             }
@@ -85,14 +95,45 @@ const CreateForm = (props: Props) => {
         );
             
         if (devMode) {
-            const nfts = await uploadFilesToNFTStorage();
-            const nft = nfts[0];
-            const newFileUrl = getIpfsUrl(splitDomain(nft["metadata"].image));
-            setFileUrl(newFileUrl);
-            setNFT(nft)
+            // const nfts = await uploadFilesToNFTStorage();
+            // const nft = nfts[0];
+            // const newFileUrl = getIpfsUrl(splitDomain(nft["metadata"].image));
+            // setFileUrl(newFileUrl);
+            // setNFT(nft)
+        } else {
+            // const added = await client.add(data);
+            const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
+            const data = JSON.stringify({
+              name,
+              description,
+              lat,
+              lng,
+              price,
+              image: 
+            });
+            const added = await client.add(data);
+            const url = `https://ipfs.infura.io/ipfs/${added.path}`;
         }
     };
 
+    async function handleImageUpload(e: any) {
+        if (!e || !e.target || !e.target.files || !e.target.files[0]) {
+            setIPFSFile("");
+          return;
+        }
+        const file = e.target.files[0];
+        try {
+          // nft.storage was returning 500 type error - it was reported on discord that it was down
+        const added = await client.add(file, {
+            progress: (prog) => console.log(`received: ${prog}`),
+        });
+        const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+        setFileUrl(url);
+        setIPFSFile(file);
+        } catch (error) {
+          console.log(`Error uploading file: ${error}`);
+        }
+      }
     const renderImage = () => {
         if (fileUrl) {
             return (
@@ -106,7 +147,20 @@ const CreateForm = (props: Props) => {
         }
         return "";
     };
-    const handleMint = () => {
+    const getIPFSNFTLink = async () => {
+        const data = JSON.stringify({
+            name,
+            description,
+            image: fileUrl,
+        });
+        const added = await client.add(data);
+        const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+        return url;
+    }
+    const handleMint = async () => {
+        // 1. first upload to realtime storage to create nft metadata
+        const nftUrlLink = await getIPFSNFTLink()
+        writeMedia(nft, true, lat, lng, cloudFileUrl, fileUrl);
         props.onSubmit(nft, price, lat, lng, cloudFileUrl, fileUrl);
     }
     const handleSale = () => {
@@ -190,7 +244,7 @@ const CreateForm = (props: Props) => {
                     />
                 </Box>
                 <Box m={4}>
-                    <div
+                    {/* <div
                         {...getRootProps({ className: "dropzone" })}
                         style={{ cursor: "pointer" }}
                     >
@@ -203,7 +257,17 @@ const CreateForm = (props: Props) => {
                     <aside>
                         <h4>Files</h4>
                         <ul>{files}</ul>
-                    </aside>
+                    </aside> */}
+
+<input
+                                type="file"
+                                name="image"
+                                className="CreateForm__img"
+                                onChange={handleImageUpload}
+                                style={{
+                                    backgroundColor: "brand.darkslategray"
+                                }}
+                            />
                 </Box>
                 <Button
                     m={4}

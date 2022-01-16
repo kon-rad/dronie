@@ -8,22 +8,22 @@ import {
 } from "firebase/storage";
 
 export const writeMedia = async (
-    nft: any,
+    name: string,
+    description: string,
     isForSale: boolean,
     lat: string,
     lng: string,
     cloudFileUrl: string,
     fileUrl: string
 ) => {
-    console.log("writeMedia: ", nft, isForSale, lat, lng, cloudFileUrl, fileUrl);
+    console.log("writeMedia: ", name, isForSale, lat, lng, cloudFileUrl, fileUrl);
 
     const hash = geofire.geohashForLocation([parseFloat(lat), parseFloat(lng)]);
 
     try {
         const docRef = await addDoc(collection(db, "media"), {
-            tokenId: nft.url,
-            name: nft.metadata.name,
-            description: nft.metadata.description,
+            name: name,
+            description: description,
             isForSale: isForSale,
             geohash: hash,
             lat: lat,
@@ -32,6 +32,7 @@ export const writeMedia = async (
             fileUrl: fileUrl,
         });
         console.log("Document written with ID: ", docRef.id);
+        return docRef.id;
     } catch (e) {
         console.error("Error adding document: ", e);
     }

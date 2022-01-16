@@ -24,7 +24,7 @@ const Post: NextPage = () => {
         }
         if (web3.account && web3.library) {
             await createPost(web3.account, web3.library, nft, price);
-            writeMedia(nft, true, lat, lng, cloudFileUrl, fileUrl);
+            // writeMedia(nft, true, lat, lng, cloudFileUrl, fileUrl);
         } else {
             console.error(
                 "Error: could not make post. Missing one of these required parameters:",
