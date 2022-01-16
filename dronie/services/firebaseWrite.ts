@@ -1,27 +1,27 @@
-import { getDatabase, ref, set } from "firebase/database";
-import { db, geofire, firebaseApp } from '../utils/firebase';
-
+import { db, geofire } from '../utils/firebase';
 import { collection, addDoc } from "firebase/firestore";
 
 export const writeMedia = async (
-    tokenId: string,
-    name: string,
-    description: string,
+    nft: any,
     isForSale: boolean,
     lat: string,
     lng: string,
+    fileUrl: string,
 ) => {
+    console.log("writeMedia: ", nft, isForSale, lat, lng, fileUrl);
+
     const hash = geofire.geohashForLocation([parseFloat(lat), parseFloat(lng)]);
 
     try {
         const docRef = await addDoc(collection(db, "media"), {
-            tokenId: tokenId,
-            name: name,
-            description: description,
+            tokenId: nft.url,
+            name: nft.name,
+            description: nft.description,
             isForSale: isForSale,
             geohash: hash,
             lat: lat,
             lng: lng,
+            fileUrl: fileUrl,
         });
         console.log("Document written with ID: ", docRef.id);
     } catch (e) {
