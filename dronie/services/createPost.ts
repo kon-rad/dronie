@@ -29,9 +29,9 @@ export async function getNFTUri(description: string, fileUrl: string, price: str
         const url = `https://ipfs.infura.io/ipfs/${added.path}`;
         // todo: remove dev mode
         // const url = "https://ipfs.infura.io/ipfs/QmeeDx14Vxy4gyD1YCq1M49Ysf9oaDN7XWCjmpFq9yvRf5";
-        console.log('creating sale: ', url, price, address);
+        // console.log('creating sale: ', url, price, address);
         /* after file is uploaded to nftStorage, pass the URL to save it on blockchain */
-        createSale(url, price, address, provider);
+        // createSale(url, price, address, provider);
     } catch (error) {
         console.log(`Error uploading file: ${error}`);
     }

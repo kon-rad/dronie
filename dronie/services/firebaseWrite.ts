@@ -14,7 +14,8 @@ export const writeMedia = async (
     lat: string,
     lng: string,
     cloudFileUrl: string,
-    fileUrl: string
+    fileUrl: string,
+    nftUrlLink: string,
 ) => {
     console.log("writeMedia: ", name, isForSale, lat, lng, cloudFileUrl, fileUrl);
 
@@ -30,6 +31,7 @@ export const writeMedia = async (
             lng: lng,
             cloudFileUrl: cloudFileUrl,
             fileUrl: fileUrl,
+            nftUrlLink: nftUrlLink,
         });
         console.log("Document written with ID: ", docRef.id);
         return docRef.id;

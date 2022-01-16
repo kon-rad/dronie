@@ -59,7 +59,7 @@ export default function Nav() {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            Dronie
+            Dronie Nexus
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -272,5 +272,9 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Profile",
     href: "/profile",
+  },
+  {
+    label: "About us",
+    href: "/aboutus",
   },
 ];
