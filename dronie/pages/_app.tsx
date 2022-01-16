@@ -4,12 +4,10 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import Nav from "../components/nav";
 import Footer from "../components/footer";
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { Web3ReactProvider } from "@web3-react/core";
 import { getProvider } from "../utils/web3";
 import { SEO } from '../components/seo'
 import "@fontsource/syne"
-import { getFirestore } from "firebase/firestore"
 
 declare global {
   interface Window {
@@ -35,7 +33,7 @@ const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : get
 const styles = {
   global: (props: any) => ({
     body: {
-      color: 'whiteAlpha.900',
+      color: 'gray.900',
       bg: 'brand.darkslategray',
     },
   }),
@@ -58,23 +56,34 @@ const dronieTheme = {
     },
   },
   components: {
+    Input: {
+      baseStyle: {
+        color: 'gray.200',
+      },
+    },
+    TextArea: {
+      baseStyle: {
+        color: 'gray.200',
+      },
+      color: 'gray.200',
+    },
     Button: {
       baseStyle: {
-        color: 'gray.100',
-        background: 'red.400',
-        backgroundColor: 'red.400',
+        color: 'gray.800',
+        background: 'purple.400',
+        backgroundColor: 'purple.400',
         _hover: {
-          background: 'red.600',
-          backgroundColor: 'red.600',
+          background: 'purple.600',
+          backgroundColor: 'purple.600',
         },
         _active: {
-          background: 'red.600',
-          backgroundColor: 'red.600',
+          background: 'purple.600',
+          backgroundColor: 'purple.600',
         }
       },
       variants: {
         primary: {
-          color: "gray.100"
+          color: "gray.800"
         },
         bright: {
           backgroundColor: "linear-gradient(to right, #eaafc8, #654ea3)",
@@ -82,42 +91,42 @@ const dronieTheme = {
       },
     },
     MenuItem: {
-      color: 'purple.800',
+      color: 'gray.800',
       _hover: {
-        background: 'red.600',
-        backgroundColor: 'red.600',
+        background: 'purple.600',
+        backgroundColor: 'purple.600',
       },
       _active: {
-        background: 'red.600',
-        backgroundColor: 'red.600',
+        background: 'purple.600',
+        backgroundColor: 'purple.600',
       },
       _focus: {
-        background: 'red.600',
-        backgroundColor: 'red.600',
+        background: 'purple.600',
+        backgroundColor: 'purple.600',
       },
       baseStyle: {
         color: 'purple.800',
         _hover: {
-          background: 'red.600',
-          backgroundColor: 'red.600',
+          background: 'purple.600',
+          backgroundColor: 'purple.600',
         },
         _active: {
-          background: 'red.600',
-          backgroundColor: 'red.600',
+          background: 'purple.600',
+          backgroundColor: 'purple.600',
         },
         _focus: {
-          background: 'red.600',
-          backgroundColor: 'red.600',
+          background: 'purple.600',
+          backgroundColor: 'purple.600',
         }
       }
     },
     Text: {
       baseStyle: {
-        color: 'gray.100',
+        color: 'gray.800',
       },
       variants: {
         primary: {
-          color: "gray.100"
+          color: "gray.800"
         },
       },
     }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Input,
     Flex,
@@ -11,36 +11,50 @@ import {
 import { storeNFT } from "../services/nftStorage";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { getIpfsUrl, splitDomain } from '../utils/storage';
+import { getIpfsUrl, splitDomain } from "../utils/storage";
+import { uploadToFirebase } from "../services/firebaseWrite";
+import { getDownloadURL } from "firebase/storage";
 
 type Props = {
     onSubmit: any;
 };
 
+const devMode = true;
+
 const CreateForm = (props: Props) => {
-    const [fileUrl, setFileUrl] = useState<any>(null);
+    const [fileUrl, setFileUrl] = useState<string>("");
+    const [cloudFileUrl, setCloudFileUrl] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [price, setPrice] = useState<string>("");
     const [lat, setLat] = useState<string>("");
     const [lng, setLng] = useState<string>("");
+    const [isMinted, setIsMInted] = useState<boolean>(false);
+    const [nft, setNFT] = useState<any>(null);
 
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
     const files = acceptedFiles.map((file: any) => (
-        <li key={file.path}>
+        <Box key={file.path} m="2">
             {file.path} - {file.size} bytes
-        </li>
+        </Box>
     ));
 
-    const uploadFiles = async () => {
+    const onImageUpload = async (snapshoRef: any) => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        const newCloudFileUrl = await getDownloadURL(snapshoRef);
+        setCloudFileUrl(newCloudFileUrl);
+    };
+
+    const uploadFilesToNFTStorage = async () => {
         let results = [];
         console.log("acceptedFiles: ", acceptedFiles);
         for (let i in acceptedFiles) {
             const f: any = acceptedFiles[i];
             const fileName = f.name || f.key;
             try {
-                const nftData: any = await storeNFT(fileName, description, f);
+                const nftData: any = await storeNFT(name, description, f);
                 const response = await axios.get(
                     getIpfsUrl(splitDomain(nftData.url))
                 );
@@ -61,16 +75,22 @@ const CreateForm = (props: Props) => {
         console.log("results: ", results);
         return results;
     };
-    const handleSubmit = async () => {
-        const nfts = await uploadFiles();
-        if (!nfts || nfts.length < 1) {
-            return;
+    const handleUpload = async () => {
+
+        const f: any = acceptedFiles[0];
+        uploadToFirebase(
+            name,
+            f,
+            onImageUpload
+        );
+            
+        if (devMode) {
+            const nfts = await uploadFilesToNFTStorage();
+            const nft = nfts[0];
+            const newFileUrl = getIpfsUrl(splitDomain(nft["metadata"].image));
+            setFileUrl(newFileUrl);
+            setNFT(nft)
         }
-        const nft = nfts[0];
-        const newFileUrl = getIpfsUrl(splitDomain(nft["metadata"].image));
-        console.log("nft final: ---- ", nft);
-        setFileUrl(newFileUrl);
-        props.onSubmit(nft, price, lat, lng, newFileUrl);
     };
 
     const renderImage = () => {
@@ -86,10 +106,16 @@ const CreateForm = (props: Props) => {
         }
         return "";
     };
+    const handleMint = () => {
+        props.onSubmit(nft, price, lat, lng, cloudFileUrl, fileUrl);
+    }
+    const handleSale = () => {
+        
+    }
     return (
         <Box
-            borderColor="brand.gradienta"
-            bg={"brand.gradienta"}
+            borderColor="purple.200"
+            bg={"purple.200"}
             maxW="700px"
             width="700px"
             p={4}
@@ -116,6 +142,7 @@ const CreateForm = (props: Props) => {
                     bg="brand.darkslategray"
                     m="2"
                     value={name}
+                    color={"gray.200"}
                 />
                 <Textarea
                     mb={4}
@@ -128,6 +155,7 @@ const CreateForm = (props: Props) => {
                     bg="brand.darkslategray"
                     borderRadius="md"
                     m="2"
+                    color={"gray.200"}
                 />
                 <Box mb={4}>
                     <Input
@@ -138,6 +166,7 @@ const CreateForm = (props: Props) => {
                         bg="brand.darkslategray"
                         m="2"
                         value={price}
+                        color={"gray.200"}
                     />
                     <Input
                         borderColor="brand.darkslategray"
@@ -147,6 +176,7 @@ const CreateForm = (props: Props) => {
                         bg="brand.darkslategray"
                         m="2"
                         value={lat}
+                        color={"gray.200"}
                     />
                     <Input
                         borderColor="brand.darkslategray"
@@ -156,10 +186,14 @@ const CreateForm = (props: Props) => {
                         bg="brand.darkslategray"
                         m="2"
                         value={lng}
+                        color={"gray.200"}
                     />
                 </Box>
                 <Box m={4}>
-                    <div {...getRootProps({ className: "dropzone" })}>
+                    <div
+                        {...getRootProps({ className: "dropzone" })}
+                        style={{ cursor: "pointer" }}
+                    >
                         <input {...getInputProps()} />
                         <h3>
                             Drag 'n' drop some files here, or click to select
@@ -171,8 +205,28 @@ const CreateForm = (props: Props) => {
                         <ul>{files}</ul>
                     </aside>
                 </Box>
-                <Button mb={4} colorScheme={"purple"} onClick={handleSubmit}>
-                    submit
+                <Button
+                    m={4}
+                    colorScheme={"purple.600"}
+                    onClick={handleUpload}
+                >
+                    upload file
+                </Button>
+                <Button
+                    m={4}
+                    colorScheme={"purple.600"}
+                    onClick={handleMint}
+                    disabled={cloudFileUrl === ""}
+                >
+                    mint NFT
+                </Button>
+                <Button
+                    m={4}
+                    colorScheme={"purple.600"}
+                    onClick={handleSale}
+                    disabled={cloudFileUrl === "" || isMinted}
+                >
+                    put on sale
                 </Button>
             </Flex>
         </Box>
