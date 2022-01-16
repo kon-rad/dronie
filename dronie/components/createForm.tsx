@@ -18,9 +18,11 @@ const CreateForm = (props: Props) => {
   const [fileUrl, setFileUrl] = useState<any>(null);
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<string>("");
+  const [lat, setLat] = useState<string>("");
+  const [lng, setLng] = useState<string>("");
 
   const handleSubmit = () => {
-    props.onSubmit(description, fileUrl, price);
+    props.onSubmit(description, fileUrl, price, lat, lng);
   };
 
   async function handleImageUpload(e: any) {
@@ -91,6 +93,20 @@ const CreateForm = (props: Props) => {
             w="100px"
             placeholder="ETH price"
             onChange={(e) => setPrice(e.target.value)}
+            bg="brand.darkslategray"
+          />
+          <Input
+            borderColor="brand.darkslategray"
+            w="200px"
+            placeholder="Latitude"
+            onChange={(e) => setLat(e.target.value)}
+            bg="brand.darkslategray"
+          />
+          <Input
+            borderColor="brand.darkslategray"
+            w="200px"
+            placeholder="Longitude"
+            onChange={(e) => setLng(e.target.value)}
             bg="brand.darkslategray"
           />
         </Box>

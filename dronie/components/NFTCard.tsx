@@ -2,7 +2,7 @@ import { Box, Text, HStack, VStack, Image, Flex, Button } from '@chakra-ui/react
 import { NFT, AllNFT } from '../utils/types';
 import { useState } from 'react';
 
-type Props = {
+interface Props {
     nft: NFT | AllNFT,
     index: number,
 }
