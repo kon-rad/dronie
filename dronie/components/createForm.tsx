@@ -11,14 +11,11 @@ import {
 import { storeNFT } from "../services/nftStorage";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
+import { getIpfsUrl, splitDomain } from '../utils/storage';
 
 type Props = {
     onSubmit: any;
 };
-
-export const splitDomain = (url: string) => url.split("//")[1];
-
-export const getIpfsUrl = (cid: string) => `https://ipfs.io/ipfs/${cid}`;
 
 const CreateForm = (props: Props) => {
     const [fileUrl, setFileUrl] = useState<any>(null);

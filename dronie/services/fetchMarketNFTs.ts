@@ -1,8 +1,7 @@
 import { ethers } from "ethers";
-import { Web3Provider } from "@ethersproject/providers";
-import { create as ipfsHttpClient } from "ipfs-http-client";
 import { dronieAddress, marketAddress } from "../../config";
 import axios from "axios";
+import { getIpfsUrl, splitDomain } from '../utils/storage';
 
 import NFT from "../../artifacts/contracts/Dronie.sol/Dronie.json";
 import Market from "../../artifacts/contracts/DronieMarket.sol/DronieMarket.json";
@@ -22,20 +21,30 @@ export const fetchMarketNFTs = async (provider: any) => {
 
   const getItem = async (i: any) => {
     console.log("item: ", i);
+    debugger;
     const tokenUri = await nftContract.tokenURI(i.tokenId);
     console.log("tokenUri: ", tokenUri);
     if (/undefined/.test(tokenUri)) {
       return;
     }
-    const meta = await axios.get(tokenUri);
+    let realTokenUri = tokenUri;
+    if (/^ipfs:\/\//.test(tokenUri)) {
+      realTokenUri = getIpfsUrl(splitDomain(tokenUri))
+    }
+    const meta = await axios.get(realTokenUri);
     let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+    let imageUrl = meta.data.image;
+    if (/^ipfs:\/\//.test(meta.data.image)) {
+      imageUrl = getIpfsUrl(splitDomain(meta.data.image))
+    }
+
     const item = {
       price,
       tokenId: i.tokenId.toNumber(),
       seller: i.seller,
       owner: i.owner,
       sold: i.sold,
-      image: meta.data.image,
+      image: imageUrl,
       description: meta.data.description,
     };
     console.log("item meta: ", meta);
